@@ -1,5 +1,7 @@
 # simus-2019-2
 Os códigos estão organizados em pastas numeradas conforme suas respectivas questões.
+## Links úteis:
+* ### [Pasta com slides e seus bookmarks atualizados, e listas do restante da disciplina](https://drive.google.com/drive/folders/12un7rCe_YxG_v-BtJ3xsRKmhWVzI8mPv?usp=sharing)
 ## Enunciados: 
 ### Questão 1
 Escrever uma rotina ContaUnsZeros. Recebe o endereço de uma palavra de 32 bits na pilha e no acumulador um parâmetro, se for 0 conta o número de '0's, se for '1' conta o número de '1's na palavra. O resultado é devolvido no acumulador. Apresente um programa de exemplo. (1,0 ponto)
