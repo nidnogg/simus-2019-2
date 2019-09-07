@@ -4,13 +4,13 @@
 ;---------------------------------------------------
 
 org 0
-start:
+routine:
         in 0
         add #5
-        or #99
-        jnz end
+        sub #6
+        jnz end ; Jumps to end if Z is 0 (result is not zero)
 
-        jmp main
+        jmp routine
 end:    hlt
 
 ;---------------------------------------------------
