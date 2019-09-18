@@ -1,38 +1,62 @@
 ;---------------------------------------------------
 ; Programa: 3maiorValor.asm
 ; Autor: Henrique
-; Desc: 
+; Desc: Esse programa recebe um 
 ;---------------------------------------------------
 
-ORG 104
-    PTR_A: DW A
-    A: DB 1
+ORG 1000
 
-   
-    PTR_B: DW B
-    B: DB 2Bh
+    PTR_LARGEST: DW LARGEST
+    LARGEST: DB 0
 
-
-    ;ARR_SIZE: DB 20
-    ;ARR: DB 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 
-    ;CONT: DB 0 
-ORG 1000 
-    
-    PTR_STR: DW TO_PRINT
-    TO_PRINT: STR "Return value = "
-              DB 0
+    ARR_SIZE: DB 20
+    PTR_ARR: DW ARR           ;
+    ARR: DB 1, 80, 3, 4, 5, 6, 7, 8, 9, 10, 11, 90, 13, 14, 15, 16, 17, 18, 19, 20 
+    COUNT: DB 0 
 
 ORG 0 
 START:
-    OUT CLEARBANNER
+    OUT CLEARBANNER 
+    LDA @PTR_ARR
+    STA @PTR_LARGEST  ; primeiro elemento é o maior
+
+MAIN:
+    PUSH ARR       ; passa end do vetor na pilha
+    ; checa se chegou ao fim do vetor    
+    LDA ARR_SIZE   ; passa tamanho do vetor no acumulador  
+
+    SUB COUNT      ; Se array - counter = 0, chegou ao fim do array
+    JZ PRINT       ; printa maior
 
 ITER: 
-    ;LDA ARR_SIZE
-    ;SUB CONT
-    ;JZ END
+    LDA #1
+    ADD COUNT
+    STA COUNT
+
+    JMP LOOP
+
+LOOP:
+    LDA PTR_ARR      ; pega proximo elem do vetor 
+    ADD #1
+    STA PTR_ARR 
+    LDA @PTR_LARGEST ; carrega maior elem no vetor
+    SUB @PTR_ARR     ; subtrai do proximo elem
+  
+    JN UPDATE_LARGEST ; se elem maior > elem atual, N = 1 (result neg)
+   
+    ;LDA #1
+    ;ADD PTR_ARR
+    ;STA PTR_ARR
+    JMP MAIN
+
+UPDATE_LARGEST:
+    LDA @PTR_ARR
+    STA @PTR_LARGEST
+    JMP MAIN
+   
 PRINT: 
     ; printa primeiro byte 
-    LDA @PTR_B
+    LDA @PTR_LARGEST
                         
     SHR 
     SHR   
@@ -41,7 +65,7 @@ PRINT:
     JSR EVAL_PRINT    ; avalia se é num ou letra
 
     ; printa segundo byte 
-    LDA @PTR_B
+    LDA @PTR_LARGEST 
                         
     AND #15             ; mask com 11110000 pra pegar segunda metade 
     JSR EVAL_PRINT    ; avalia se é num ou letra
@@ -68,23 +92,6 @@ PRINT_LETTER:
     ADD #10
     RET
     
-PRINT_STR:
-    ;LDA PTR_STR
-    ;PUSH
-    LDA @PTR_STR
-     
-    OR #0
-    JZ PRINT_VALUE
-    
-    OUT BANNER
-  
-    LDA PTR_STR
-    ADD #1   
-    STA PTR_STR
-    JMP PRINT
-
-PRINT_VALUE:
-  
 END: 
     HLT 
 
