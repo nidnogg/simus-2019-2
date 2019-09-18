@@ -1,108 +1,81 @@
 ;---------------------------------------------------
 ; Programa: 3maiorValor.asm
 ; Autor: Henrique
+; Desc: 
 ;---------------------------------------------------
 
-ORG 1000 
+ORG 104
+    A: DB 1
+    PTR_A: DW A 
    
-    PTR_A: DW A
-    A: DW 20 
-       DB 0          ; byte de sinal 
-    
+    B: DB 2Bh
     PTR_B: DW B
-    B: DW 25       
-       DB 0 
 
-    GREATER_STR: STR "A é maior que B"
-                 DB 0 
-    PTR_IS_GREATER: DW GREATER_STR
+    ;ARR_SIZE: DB 20
+    ;ARR: DB 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 
+    ;CONT: DB 0 
+ORG 1000 
     
-    LOWER_STR: STR "A é menor que B"
-               DB 0 
-    PTR_IS_LOWER: DW LOWER_STR
+    PTR_STR: DW TO_PRINT
+    TO_PRINT: STR "Return value = "
+              DB 0
 
-    EQUAL_STR: STR "A é igual a B"
-               DB 0 
-    PTR_IS_EQUAL: DW EQUAL_STR
-
-ORG 0
+ORG 0 
 START:
     OUT CLEARBANNER
 
-COMPARE: 
-    LDA PTR_A
-    PUSH 
-    
-    LDA PTR_B
-    PUSH
-    
-    LDA @PTR_A  
-    NOP
-    SUB @PTR_B
-    
-    JZ PRINT_IS_EQUAL
-    JN PRINT_IS_LOWER
-    JNZ PRINT_IS_GREATER
+ITER: 
+    ;LDA ARR_SIZE
+    ;SUB CONT
+    ;JZ END
+PRINT: 
+    LDA PTR_B 
+    LDA @PTR_B
 
+    JSR EVAL_PRINT 
     
+    LDA @PTR_B 
+    SHR               ; shift right pra pegar o próximo byte
+    STA @PTR_B 
+ 
+    JMP PRINT
 
-PRINT_IS_EQUAL:
-    LDA PTR_IS_EQUAL
-    PUSH
-    LDA @PTR_IS_EQUAL
+EVAL_PRINT: 
+    SUB #10           ; se negativo, é número
+    JN PRINT_NUM
+    JNZ PRINT_LETTER
+    JZ PRINT_LETTER 
 
-    OR #0                 ; termina com null 
-    JZ END_IS_EQUAL
+PRINT_NUM: 
+    ADD #30h     ; soma 30h, que é a posicao de 0 em ASCII
+    OUT BANNER   ; imprime
+    RET          ; volta pra loop de print  
 
+PRINT_LETTER: 
+    ADD #41h     ; soma 41h, posicao de A em ASCII
     OUT BANNER 
-    LDA #CONSOLEWRITE
-    TRAP @PTR_IS_EQUAL
-    LDA PTR_IS_EQUAL
-    ADD #1
-    STA PTR_IS_EQUAL
-    JMP PRINT_IS_EQUAL
+    RET
+    
+PRINT_STR:
+    ;LDA PTR_STR
+    ;PUSH
+    LDA @PTR_STR
+     
+    OR #0
+    JZ PRINT_VALUE
+    
+    OUT BANNER
+  
+    LDA PTR_STR
+    ADD #1   
+    STA PTR_STR
+    JMP PRINT
 
-PRINT_IS_GREATER:
-    LDA PTR_IS_GREATER
-    PUSH
-    LDA @PTR_IS_GREATER
-
-    OR #0                 ; termina com null 
-    JZ END_IS_GREATER
-
-    OUT BANNER 
-    LDA #CONSOLEWRITE
-    TRAP @PTR_IS_GREATER
-    LDA PTR_IS_GREATER
-    ADD #1
-    STA PTR_IS_GREATER
-    JMP PRINT_IS_GREATER
-
-PRINT_IS_LOWER:
-    LDA PTR_IS_LOWER
-    PUSH
-    LDA @PTR_IS_LOWER
-
-    OR #0                 ; termina com null 
-    JZ END_IS_LOWER
-
-    OUT BANNER 
-    LDA #CONSOLEWRITE
-    TRAP @PTR_IS_LOWER
-    LDA PTR_IS_LOWER
-    ADD #1
-    STA PTR_IS_LOWER
-    JMP PRINT_IS_LOWER
-
-END_IS_EQUAL: 
-    LDA #0
+PRINT_VALUE:
+  
+END: 
     HLT 
-END_IS_GREATER:
-    LDA #1
-    HLT
-END_IS_LOWER:
-    LDA #-1
-    HLT
+
 
 
 ;------------------------------------------------------
