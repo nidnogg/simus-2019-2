@@ -6,16 +6,18 @@
 ;       de subtrair um do outro para ver se é negativo, 0, ou positivo
 ;       o resultado. Em cada caso há uma string a ser impressa, e 
 ;       é retornado no acumulador -1, 0, ou 1 respectivamente.
+;       Definiu-se B maior do que A, logo, o valor esperado é 
+;       e 1 no acumulador.
 ;---------------------------------------------------
 
-ORG 1000 
+ORG 2000 
    
     PTR_A: DW A
-    A: DW 20         ; Valor A a ser comparado com B 
+    A: DW 25         ; Valor A a ser comparado com B 
        DB 0          ; byte de sinal 
     
     PTR_B: DW B
-    B: DW 25         ; Valor B a ser comparado com A     
+    B: DW 20         ; Valor B a ser comparado com A     
        DB 0  
 
     GREATER_STR: STR "A é maior que B"

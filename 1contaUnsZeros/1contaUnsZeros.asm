@@ -1,6 +1,7 @@
 ;---------------------------------------------------
 ; Programa: Contador de zeros e uns
-; Autor: Leonardo Goncalves
+; Autor: Leonardo 
+; Desc: Le uma palavra de 32 bits, conta zeros e uns dela
 ;---------------------------------------------------
 
 ORG 128

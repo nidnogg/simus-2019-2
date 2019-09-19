@@ -1,7 +1,10 @@
 ;---------------------------------------------------
 ; Programa: 3maiorValor.asm
 ; Autor: Henrique
-; Desc: Esse programa recebe um 
+; Desc: Esse programa define um vetor de vars de 16 bits, e encontra
+;       o maior valor encontrado nesse vetor, imprimindo-o no console 
+;       em hexadecimal. O resultado esperado é 63 (99 em decimal), 
+;       conforme o vetor.
 ;---------------------------------------------------
 
 ORG 1000
@@ -11,7 +14,7 @@ ORG 1000
 
     ARR_SIZE: DB 20
     PTR_ARR: DW ARR           ;
-    ARR: DB 1, 80, 3, 4, 5, 6, 7, 8, 9, 10, 11, 90, 13, 14, 15, 16, 17, 18, 19, 20 
+    ARR: DB 1, 80, 3, 4, 5, 6, 7, 8, 9, 10, 11, 90, 13, 14, 15, 99, 17, 18, 19, 20 
     COUNT: DB 0 
 
 ORG 0 
@@ -21,7 +24,8 @@ START:
     STA @PTR_LARGEST  ; primeiro elemento é o maior
 
 MAIN:
-    PUSH ARR       ; passa end do vetor na pilha
+    LDA ARR
+    PUSH       ; passa end do vetor na pilha
     ; checa se chegou ao fim do vetor    
     LDA ARR_SIZE   ; passa tamanho do vetor no acumulador  
 
@@ -101,7 +105,5 @@ END:
 ; constantes de hardware
 CLEARBANNER   EQU 3
 BANNER        EQU 2
-; constantes de trap
-CONSOLEWRITE  EQU 2
 ;------------------------------------------------------
 
